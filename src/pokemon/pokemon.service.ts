@@ -80,6 +80,10 @@ export class PokemonService {
     return;
   }
 
+  async insertMany(pokemons: CreatePokemonDto[]) {
+    await this.pokemonModel.insertMany(pokemons);
+  }
+
   private handleExceptions(error: any) {
     if (error.code === 11000) {
       throw new ConflictException(
