@@ -1,0 +1,18 @@
+# This file contains the files or directories that will be excluded from the docker image.
+# For example, when using the COPY command, the files or directories listed here will be excluded.
+# This is useful for excluding files that are not needed in the docker image, such as tests, documentation, and configuration files.
+
+# Exclude the .git directory
+.git
+
+# Exclude the .gitignore file
+.gitignore
+
+# Exclude the .dockerignore file
+.dockerignore
+
+# Exclude the node_modules directory
+node_modules
+
+# Exclude the dist directory
+dist

@@ -11,13 +11,20 @@ import { Pokemon } from './entities/pokemon.entity';
 import { isValidObjectId, Model, plugin } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import e from 'express';
+import { PaginationDto } from '../common/dto/pagination.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PokemonService {
+  private readonly defaultLimit: number;
   constructor(
     @InjectModel(Pokemon.name)
     private readonly pokemonModel: Model<Pokemon>,
-  ) {}
+    private readonly configService: ConfigService,
+  ) {
+    this.defaultLimit = configService.get<number>('default_limit');
+    console.log(this.defaultLimit); // es como quedo en el archivo de configuración no como esta en el .env
+  }
 
   async create(createPokemonDto: CreatePokemonDto) {
     createPokemonDto.name = createPokemonDto.name.toLowerCase();
@@ -30,8 +37,18 @@ export class PokemonService {
     }
   }
 
-  findAll() {
-    return this.pokemonModel.find();
+  findAll(paginationDto: PaginationDto) {
+    const { limit = 10, offset = 10 } = paginationDto;
+    // Se esta organizando por la columna "no" de manera ascedente
+    return (
+      this.pokemonModel
+        .find()
+        .limit(limit)
+        .skip(offset)
+        .sort({ no: 1 })
+        // El select con el signo "-" dice que vamos a eliminar del resultado una columna, en este caso la columna "__v"
+        .select('-__v')
+    );
   }
 
   async findOne(term: string) {
