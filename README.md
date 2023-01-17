@@ -17,3 +17,8 @@
 - MongoDB
 - Mongoose (Mongo DB modeling tool)
 - NestJS
+
+## Production build
+1. Create the ```.env.prod``` file
+2. Fill the ```.env.prod``` file with your own env vars
+3. Create the new image ```docker-compose -f docker-compose.prod.yaml --env-file .env.prod up -d --build```
